@@ -8,16 +8,29 @@ from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from statsmodels.tsa.api import SimpleExpSmoothing, Holt
 
-from app.shared_engine import (
-    clean_time_series_data,
-    aggregate_observations,
-    create_time_features,
-    create_lag_features,
-    split_chronologically,
-    evaluate_models,
-    calculate_replenishment,
-    clean_currency_or_number
-)
+try:
+    from app.shared_engine import (
+        clean_time_series_data,
+        aggregate_observations,
+        create_time_features,
+        create_lag_features,
+        split_chronologically,
+        evaluate_models,
+        calculate_replenishment,
+        clean_currency_or_number
+    )
+except ImportError:
+    from backend.app.shared_engine import (
+        clean_time_series_data,
+        aggregate_observations,
+        create_time_features,
+        create_lag_features,
+        split_chronologically,
+        evaluate_models,
+        calculate_replenishment,
+        clean_currency_or_number
+    )
+
 
 class HyperlocalForecastingEngine:
     """

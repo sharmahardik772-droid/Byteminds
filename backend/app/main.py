@@ -1,4 +1,12 @@
 import os
+import sys
+from pathlib import Path
+
+# Ensure backend directory is in sys.path so 'app' is discoverable when launched from project root
+_backend_dir = str(Path(__file__).resolve().parent.parent)
+if _backend_dir not in sys.path:
+    sys.path.insert(0, _backend_dir)
+
 import uuid
 import io
 import datetime
@@ -9,29 +17,55 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse
 
-from app.sample_datasets import get_sample_catalogue, get_sample_df
-from app.data_processor import (
-    detect_column_roles,
-    audit_dataset,
-    prepare_and_clean_dataset,
-    clean_currency_string,
-    parse_period_column
-)
-from app.shared_engine import (
-    inspect_workbook_sheets,
-    validate_column_mapping
-)
-from app.forecasting import RevenueForecastingEngine
-from app.hyperlocal_forecasting import HyperlocalForecastingEngine
-from app.models import (
-    LoadSampleRequest,
-    InspectSheetRequest,
-    ColumnMappingRequest,
-    AuditRequest,
-    ForecastRequest,
-    HyperlocalForecastRequest,
-    ExportForecastRequest
-)
+try:
+    from app.sample_datasets import get_sample_catalogue, get_sample_df
+    from app.data_processor import (
+        detect_column_roles,
+        audit_dataset,
+        prepare_and_clean_dataset,
+        clean_currency_string,
+        parse_period_column
+    )
+    from app.shared_engine import (
+        inspect_workbook_sheets,
+        validate_column_mapping
+    )
+    from app.forecasting import RevenueForecastingEngine
+    from app.hyperlocal_forecasting import HyperlocalForecastingEngine
+    from app.models import (
+        LoadSampleRequest,
+        InspectSheetRequest,
+        ColumnMappingRequest,
+        AuditRequest,
+        ForecastRequest,
+        HyperlocalForecastRequest,
+        ExportForecastRequest
+    )
+except ImportError:
+    from backend.app.sample_datasets import get_sample_catalogue, get_sample_df
+    from backend.app.data_processor import (
+        detect_column_roles,
+        audit_dataset,
+        prepare_and_clean_dataset,
+        clean_currency_string,
+        parse_period_column
+    )
+    from backend.app.shared_engine import (
+        inspect_workbook_sheets,
+        validate_column_mapping
+    )
+    from backend.app.forecasting import RevenueForecastingEngine
+    from backend.app.hyperlocal_forecasting import HyperlocalForecastingEngine
+    from backend.app.models import (
+        LoadSampleRequest,
+        InspectSheetRequest,
+        ColumnMappingRequest,
+        AuditRequest,
+        ForecastRequest,
+        HyperlocalForecastRequest,
+        ExportForecastRequest
+    )
+
 
 app = FastAPI(
     title="ByteMinds Forecasting Studio API",
