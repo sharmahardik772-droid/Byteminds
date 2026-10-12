@@ -1,0 +1,12 @@
+services:
+  # Single Unified Service (FastAPI + React SPA) - Recommended for Free Tier
+  - type: web
+    name: byteminds-forecasting-studio
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r backend/requirements.txt && cd frontend && npm install && npm run build && cd .."
+    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
